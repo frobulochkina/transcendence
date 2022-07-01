@@ -20,7 +20,9 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    getHello(code) {
+    getHello(request) {
+        console.log(request);
+        const code = request['code'];
         console.log(code);
         return this.appService.getHello();
     }
