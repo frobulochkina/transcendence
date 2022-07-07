@@ -1,13 +1,17 @@
-import { Controller, Get, Post, Res } from '@nestjs/common';
+import { Controller, Dependencies, Get, Post, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppService } from './app.service';
 import { UserCode } from './decorators/user-code.decorators';
+import {HttpService} from "@nestjs/axios";
 
 @Controller()
+@Dependencies(AppService)
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService,
+    private readonly httpService: HttpService) {}
 
-  @Get()
+
+  @Get('/')
   getHello(@UserCode() request: string): string {
     console.log(request);  
     const code = request['code'];
@@ -32,13 +36,17 @@ export class AppController {
                 'Authorization': 'basic T64Mdy7m['
             }
         };
-
+        // const tokenResponse = await axios.post('https://api.intra.42.fr/oauth/token', data);
+        // console.log(tokenResponse);
+    
+        // const result = res.redirect('https://api.intra.42.fr/oauth/authorize?client_id=a89e0a72c840da0deecebcaab1b2de1452badeea23a1b9b239ad240254e5ada3&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin&response_type=code');
         const response = await axios(config, data);
         console.log(response);
+        // console.log(result);
   }
 
-  @Post()
-  getPage(): string {
-	return this.appService.getHello();
-  }
+  // @Post()
+  // getPage(): string {
+	// return this.appService.getHello();
+  // }
 }

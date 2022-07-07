@@ -16,9 +16,11 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const user_code_decorators_1 = require("./decorators/user-code.decorators");
+const axios_1 = require("@nestjs/axios");
 let AppController = class AppController {
-    constructor(appService) {
+    constructor(appService, httpService) {
         this.appService = appService;
+        this.httpService = httpService;
     }
     getHello(request) {
         console.log(request);
@@ -45,12 +47,9 @@ let AppController = class AppController {
         const response = await axios(config, data);
         console.log(response);
     }
-    getPage() {
-        return this.appService.getHello();
-    }
 };
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('/'),
     __param(0, (0, user_code_decorators_1.UserCode)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -63,15 +62,11 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "login", null);
-__decorate([
-    (0, common_1.Post)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getPage", null);
 AppController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    (0, common_1.Dependencies)(app_service_1.AppService),
+    __metadata("design:paramtypes", [app_service_1.AppService,
+        axios_1.HttpService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map
